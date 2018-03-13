@@ -1,5 +1,7 @@
 import { generate } from 'shortid';
 
+let action_types = [ "stacked", "h_split", "v_split", "tabbed" ];
+
 export class i3Tree {
 
   private tree;
@@ -30,7 +32,6 @@ export class i3Tree {
       }
     }
 
-
     recurse(tree);
 
     return tree;
@@ -42,19 +43,19 @@ export class i3Tree {
   }
 
   stacked() {
-    this.windowAction("stacked");
+    this.changeAction("stacked");
   }
 
   tabbed() {
-    this.windowAction("tabbed");
+    this.changeAction("tabbed");
   }
 
   verticalSplit() {
-    this.windowAction("v_split");
+    this.splitAction("v_split");
   }
 
   horizonalSplit() {
-    this.windowAction("h_split");
+    this.splitAction("h_split");
   }
 
   fullscreen() {
@@ -70,10 +71,13 @@ export class i3Tree {
     this.tree.removeLeafById(this.current_window);
   }
 
-  private windowAction(type: string) {
-    this.tree.appendLeaf(this.tree.getParent(this.current_window), { type: type })
+  private splitAction(type: string) {
+    this.tree.appendLeaf(this.current_window, { type: type });
   }
 
+  private changeAction(type: string) {
+    this.tree.changeLeaf(this.current_window, { type: type });
+  }
 
 }
 
@@ -97,11 +101,17 @@ export class Tree {
 
   }
 
-  appendLeaf(parent: string, leaf: Leaf) {
-    let children = this.leaves[parent].children.slice();
-    let id = this.addLeaf({ ...leaf, children: children }, parent);
-    children.map(x => this.leaves[x].parent = id);
-    this.leaves[parent].children = [id];
+  changeLeaf(child: string, leaf: Leaf) {
+    this.getLeafById(this.getParent(child)).type = leaf.type;
+  }
+
+  appendLeaf(child: string, leaf: Leaf) {
+
+    if (this.getLeafById(this.getParent(child)).children.length <= 1) return;
+
+    let id = this.addLeaf({ ...leaf, children: [child], parent: this.getParent(child) });
+    removeElement(this.getLeafById(this.getParent(child)).children, child);
+    this.getLeafById(child).parent = id;
   }
 
   removeLeafById(id: string) {

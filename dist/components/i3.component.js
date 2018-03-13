@@ -25,9 +25,7 @@ class I3 extends React.Component {
         this.state = { i3: new i3tree_service_1.i3Tree() };
     }
     renderTree() {
-        return (React.createElement("div", null,
-            " Root:",
-            this.renderSection(this.state.i3.getTree().getLeafById("root"))));
+        return (React.createElement("div", null, this.renderSection(this.state.i3.getTree().getLeafById("root"))));
     }
     renderSection(leaf) {
         if (leaf.children && leaf.children.length > 0) {
@@ -45,9 +43,6 @@ class I3 extends React.Component {
                     }
                 }),
                 " ");
-        }
-        else {
-            return "hey";
         }
     }
     render() {
