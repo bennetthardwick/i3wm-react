@@ -9,8 +9,36 @@ export class i3Tree {
     this.tree = new Tree();
   } 
 
+  getTree() {
+    return this.tree;
+  }
+
+  createTree() {
+
+    let tree = { id: "root", type: "root", children: [] };
+
+    var recurse = (_tree) => {
+      let leaf = this.tree.getLeafById(_tree.id);
+      if (leaf.children.length > 0) {
+        leaf.children.map((x,y) => {
+          let i = this.tree.getLeafById(x);
+
+          _tree.children[y] = { id: i.id, type: i.type, children: [] };
+          recurse(_tree.children[y]);
+
+        });
+      }
+    }
+
+
+    recurse(tree);
+
+    return tree;
+
+  }
+
   newTerminal(): void {
-    this.current_window = this.tree.addLeaf({ type: "terminal" }, this.current_window);
+    this.current_window = this.tree.addLeaf({ type: "terminal" }, this.tree.getParent(this.current_window));
   }
 
   stacked() {
@@ -31,6 +59,10 @@ export class i3Tree {
 
   fullscreen() {
 
+  }
+
+  goUp() {
+    this.current_window = this.tree.getParent(this.current_window);
   }
 
   closeWindow() {

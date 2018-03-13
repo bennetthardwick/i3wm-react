@@ -6,8 +6,29 @@ class i3Tree {
         this.current_window = "root";
         this.tree = new Tree();
     }
+    getTree() {
+        return this.tree;
+    }
+    createTree() {
+        let tree = [{ id: "root", type: "root", children: [] }];
+        recurse(tree[0]);
+        function recurse(_tree) {
+            let leaf = this.tree.getLeafById(_tree.id);
+            if (leaf.children.length > 0) {
+                leaf.children.map((x, y) => {
+                    let i = this.tree.getLeafById(x);
+                    _tree[y] = { id: i.id, type: i.type, children: [] };
+                    recurse(_tree[y]);
+                });
+            }
+            else {
+                _tree.push({ id: leaf.id, type: leaf.type, children: [] });
+            }
+        }
+        return tree;
+    }
     newTerminal() {
-        this.current_window = this.tree.addLeaf({ type: "terminal" }, this.current_window);
+        this.current_window = this.tree.addLeaf({ type: "terminal" }, this.tree.getParent(this.current_window));
     }
     stacked() {
         this.windowAction("stacked");
@@ -23,7 +44,13 @@ class i3Tree {
     }
     fullscreen() {
     }
+    goUp() {
+        this.current_window = this.tree.getParent(this.current_window);
+    }
     closeWindow() {
+        if (this.current_window === "root")
+            return;
+        this.tree.removeLeafById(this.current_window);
     }
     windowAction(type) {
         this.tree.appendLeaf(this.tree.getParent(this.current_window), { type: type });

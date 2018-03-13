@@ -7,3 +7,4 @@ __export(require("./App.component"));
 __export(require("./Home.component"));
 __export(require("./Main.component"));
 __export(require("./Nav.component"));
+__export(require("./i3.component"));
