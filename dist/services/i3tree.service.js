@@ -10,21 +10,18 @@ class i3Tree {
         return this.tree;
     }
     createTree() {
-        let tree = [{ id: "root", type: "root", children: [] }];
-        recurse(tree[0]);
-        function recurse(_tree) {
+        let tree = { id: "root", type: "root", children: [] };
+        var recurse = (_tree) => {
             let leaf = this.tree.getLeafById(_tree.id);
             if (leaf.children.length > 0) {
                 leaf.children.map((x, y) => {
                     let i = this.tree.getLeafById(x);
-                    _tree[y] = { id: i.id, type: i.type, children: [] };
-                    recurse(_tree[y]);
+                    _tree.children[y] = { id: i.id, type: i.type, children: [] };
+                    recurse(_tree.children[y]);
                 });
             }
-            else {
-                _tree.push({ id: leaf.id, type: leaf.type, children: [] });
-            }
-        }
+        };
+        recurse(tree);
         return tree;
     }
     newTerminal() {

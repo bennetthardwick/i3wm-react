@@ -3,25 +3,26 @@ import { i3Tree } from '../services/i3tree.service';
 
 export class I3 extends React.Component {
 
-  private i3 = new i3Tree();
+  state;
 
-  createDate() {
-    this.i3.newTerminal();
-    this.i3.newTerminal();
-    this.i3.verticalSplit();
-    this.i3.goUp();
-    this.i3.newTerminal();
-    this.i3.newTerminal();
-    this.i3.verticalSplit();
+  constructor(props) {
+    super(props);
+    this.state = { i3: new i3Tree() }
+  }
 
-    console.log(JSON.stringify(this.i3.createTree(), null, 2));
-
+  createDate = () => {
+    this.state.i3.newTerminal();
+    this.state.i3.newTerminal();
+    this.state.i3.verticalSplit();
+    this.state.i3.goUp();
+    this.state.i3.newTerminal();
+    this.state.i3.newTerminal();
+    this.state.i3.tabbed();
   }
 
   renderTree() {
-    this.createDate();
-    return (<div> Root:
-      { this.renderSection(this.i3.getTree().getLeafById("root")) }
+    return (<div>
+      { this.renderSection(this.state.i3.getTree().getLeafById("root")) }
     </div>)
   }
 
@@ -29,7 +30,7 @@ export class I3 extends React.Component {
     if (leaf.children && leaf.children.length > 0) {
       return <div key={leaf.id}> {leaf.type} { leaf.children.map(x => {
 
-      let tree = this.i3.getTree().getLeafById(x);
+      let tree = this.state.i3.getTree().getLeafById(x);
 
       if (tree.children && tree.children.length > 0) {
         return this.renderSection(tree);
@@ -37,12 +38,20 @@ export class I3 extends React.Component {
         return <div key={tree.id}>{tree.type}</div>
         }
       }) } </div>
-    } else {
-      return "hey"
     }
   }
 
+  addTerminal = (e) => {
+    this.state.i3.newTerminal();
+    this.setState(this.state);
+  }
+
+  vsplit = (e) => {
+    this.state.i3.verticalSplit();
+    this.setState(this.state);
+  }
+
   render() {
-    return <div>{this.renderTree()}</div>
+    return (<div>{this.renderTree()}<button onClick={ this.addTerminal }>new terminal</button><button onClick={ this.vsplit }>vsplit</button></div>)
   }
 }
