@@ -9,8 +9,8 @@ var app = require('express')();
 var debug = require('debug')('test:server');
 var http = require('http');
 
-app.use(require('express').static(path.join(__dirname, 'public')));
-app.get('/*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
+app.use(require('express').static(path.join(__dirname, '..', 'public')));
+app.get('/*', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'index.html')));
 
 /**
  * Get port from environment and store in Express.

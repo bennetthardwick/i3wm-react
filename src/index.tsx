@@ -1,7 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import { BrowserRouter } from 'react-router-dom';
+
+import { App, Nav } from "./components";
+
 ReactDOM.render(
-    <h1>Hey!</h1>,
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>,
     document.getElementById("root")
 );
