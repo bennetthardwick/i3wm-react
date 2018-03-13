@@ -51,7 +51,34 @@ export class I3 extends React.Component {
     this.setState(this.state);
   }
 
+  hsplit = (e) => {
+    this.state.i3.horizontalSplit();
+    this.setState(this.state);
+  }
+
+  tab = (e) => {
+    this.state.i3.tabbed();
+    this.setState(this.state);
+  }
+
+  stack = (e) => {
+    this.state.i3.stacked();
+    this.setState(this.state);
+  }
+
+  deleteWindow = (e) => {
+    this.state.i3.closeWindow();
+    this.setState(this.state);
+  }
+
   render() {
-    return (<div>{this.renderTree()}<button onClick={ this.addTerminal }>new terminal</button><button onClick={ this.vsplit }>vsplit</button></div>)
+    return (<div>{this.renderTree()}
+        <button onClick={ this.addTerminal }>new terminal</button>
+        <button onClick={ this.vsplit }>vsplit</button>
+        <button onClick={ this.hsplit }>hsplit</button>
+        <button onClick={ this.tab }>tab</button>
+        <button onClick={ this.stack }>stack</button>
+        <button onClick={ this.deleteWindow }>deleteWindow</button>
+      </div>)
   }
 }

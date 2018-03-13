@@ -54,7 +54,7 @@ export class i3Tree {
     this.splitAction("v_split");
   }
 
-  horizonalSplit() {
+  horizontalSplit() {
     this.splitAction("h_split");
   }
 
@@ -129,6 +129,7 @@ export class Tree {
   }
 
   removeLeafChildrenById(id: string) {
+    console.log(id);
     this.removeLeafChildrenRecursively(this.leaves[id].children);
     this.leaves[id].children = [];
   }
