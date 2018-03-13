@@ -69,6 +69,7 @@ export class i3Tree {
   closeWindow() {
     if (this.current_window === "root") return;
     this.tree.removeLeafById(this.current_window);
+    // TODO, SET CURRENT WINDOW TO NEXT CHJILD
   }
 
   private splitAction(type: string) {
