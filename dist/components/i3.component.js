@@ -22,6 +22,22 @@ class I3 extends React.Component {
             this.state.i3.verticalSplit();
             this.setState(this.state);
         };
+        this.hsplit = (e) => {
+            this.state.i3.horizontalSplit();
+            this.setState(this.state);
+        };
+        this.tab = (e) => {
+            this.state.i3.tabbed();
+            this.setState(this.state);
+        };
+        this.stack = (e) => {
+            this.state.i3.stacked();
+            this.setState(this.state);
+        };
+        this.deleteWindow = (e) => {
+            this.state.i3.closeWindow();
+            this.setState(this.state);
+        };
         this.state = { i3: new i3tree_service_1.i3Tree() };
     }
     renderTree() {
@@ -49,7 +65,11 @@ class I3 extends React.Component {
         return (React.createElement("div", null,
             this.renderTree(),
             React.createElement("button", { onClick: this.addTerminal }, "new terminal"),
-            React.createElement("button", { onClick: this.vsplit }, "vsplit")));
+            React.createElement("button", { onClick: this.vsplit }, "vsplit"),
+            React.createElement("button", { onClick: this.hsplit }, "hsplit"),
+            React.createElement("button", { onClick: this.tab }, "tab"),
+            React.createElement("button", { onClick: this.stack }, "stack"),
+            React.createElement("button", { onClick: this.deleteWindow }, "deleteWindow")));
     }
 }
 exports.I3 = I3;
