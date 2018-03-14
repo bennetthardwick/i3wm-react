@@ -108,7 +108,7 @@ export class Tree {
 
   appendLeaf(child: string, leaf: Leaf) {
 
-    if (this.getLeafById(this.getParent(child)).children.length <= 1) return;
+    if (!(action_types.indexOf(leaf.type) > -1) && this.getLeafById(this.getParent(child)).children.length <= 1) return;
 
     let id = this.addLeaf({ ...leaf, children: [child], parent: this.getParent(child) });
     removeElement(this.getLeafById(this.getParent(child)).children, child);
@@ -130,7 +130,6 @@ export class Tree {
   }
 
   removeLeafChildrenById(id: string) {
-    console.log(id);
     this.removeLeafChildrenRecursively(this.leaves[id].children);
     this.leaves[id].children = [];
   }
@@ -166,5 +165,18 @@ interface ILeafMap {
 
 function removeElement(array: string[], element: string) {
   let index = array.indexOf(element)
-  if (index > -1 ) return array.splice(index, 1);
+
+  if (index > -1 ) { 
+    let newArray = array.splice(index, 1).slice();
+    if ( newArray.length > 1) { 
+
+      if ((newArray.length - 1) >= index) {
+        return index;
+      } else {
+        return index - 1;
+      }
+    }
+  } else {
+    return -1;
+  }
 }
