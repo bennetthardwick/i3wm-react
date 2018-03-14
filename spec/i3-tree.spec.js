@@ -26,10 +26,9 @@ describe('Tree backbone', () => {
 
   it("appends a leaf between two leafs", () => {
     tree.addLeaf({ parent: "root", id: "john", type: "terminal" });
-    tree.appendLeaf("root", { id: "middle", type: "v_split" });
+    tree.appendLeaf("john", { id: "middle", type: "v_split" });
 
     let tree_data = tree.getLeaves();
-
     expect(tree_data["john"].children.length === 0
         && tree_data["middle"].children[0] === "john" 
         && tree_data["root"].children[0] === "middle")
