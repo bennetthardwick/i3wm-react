@@ -5,7 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "tsc && mocha --recursive spec/*",
-    "start": "tsc && node ./bin/www"
+    "start": "tsc && webpack && node ./bin/www"
   },
   "repository": {
     "type": "git",
