@@ -81,9 +81,14 @@ class Tree {
     appendLeaf(child, leaf) {
         if (!(action_types.indexOf(leaf.type) > -1) && this.getLeafById(this.getParent(child)).children.length <= 1)
             return;
-        let id = this.addLeaf(Object.assign({}, leaf, { children: [child], parent: this.getParent(child) }));
-        removeElement(this.getLeafById(this.getParent(child)).children, child);
-        this.getLeafById(child).parent = id;
+        if (action_types.indexOf(leaf.type) > -1 && action_types.indexOf(this.getLeafById(this.getParent(child)).type) > -1) {
+            this.changeLeaf(child, leaf);
+        }
+        else {
+            let id = this.addLeaf(Object.assign({}, leaf, { children: [child], parent: this.getParent(child) }));
+            removeElement(this.getLeafById(this.getParent(child)).children, child);
+            this.getLeafById(child).parent = id;
+        }
     }
     removeLeafById(id) {
         this.removeLeafChildrenById(id);
