@@ -79,7 +79,7 @@ class Tree {
         this.getLeafById(this.getParent(child)).type = leaf.type;
     }
     appendLeaf(child, leaf) {
-        if (this.getLeafById(this.getParent(child)).children.length <= 1)
+        if (!(action_types.indexOf(leaf.type) > -1) && this.getLeafById(this.getParent(child)).children.length <= 1)
             return;
         let id = this.addLeaf(Object.assign({}, leaf, { children: [child], parent: this.getParent(child) }));
         removeElement(this.getLeafById(this.getParent(child)).children, child);
@@ -98,7 +98,6 @@ class Tree {
         });
     }
     removeLeafChildrenById(id) {
-        console.log(id);
         this.removeLeafChildrenRecursively(this.leaves[id].children);
         this.leaves[id].children = [];
     }
@@ -118,6 +117,18 @@ class Tree {
 exports.Tree = Tree;
 function removeElement(array, element) {
     let index = array.indexOf(element);
-    if (index > -1)
-        return array.splice(index, 1);
+    if (index > -1) {
+        let newArray = array.splice(index, 1).slice();
+        if (newArray.length > 1) {
+            if ((newArray.length - 1) >= index) {
+                return index;
+            }
+            else {
+                return index - 1;
+            }
+        }
+    }
+    else {
+        return -1;
+    }
 }
