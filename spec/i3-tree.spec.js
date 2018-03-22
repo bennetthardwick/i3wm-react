@@ -1,4 +1,5 @@
-const Tree = require('../dist/services/i3tree.service').Tree;
+const i3tree = require('../dist/services/i3tree.service');
+const Tree = i3tree.Tree;
 const expect = require('chai').expect;
 
 describe('Tree backbone', () => {
@@ -51,5 +52,32 @@ describe('Tree backbone', () => {
       .to.equal(true);
 
   });
+
+  describe('remove from array utility', () => {
+    it('removes an element from an array', () => {
+      let array = [ "a", "b", "c" ];
+      i3tree.removeElement(array, "b");
+      expect(JSON.stringify(array)).to.equal(JSON.stringify(["a", "c"]));
+    });
+
+    it('returns the same index if another fills it\'s place', () => {
+      let array = [ "a", "b", "c", "d" ];
+      let index = i3tree.removeElement(array, "b");
+      expect(index).to.equal(1);
+    });
+
+    it('returns -1 if there is no available index', () => {
+      let array = [ "a" ];
+      let index = i3tree.removeElement(array, "a");
+      expect(index).to.equal(-1);
+    });
+
+    it('returns -1 if there is no member of that array', () => {
+      let array = [ "a" ];
+      let index = i3tree.removeElement(array, "b");
+      expect(index).to.equal(-1);
+    });
+
+  })
 
 });
