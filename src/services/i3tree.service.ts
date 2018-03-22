@@ -78,14 +78,11 @@ export class i3Tree {
   }
 
   private splitAction(type: string) {
-
-    if ((this.tree.getLeafById(this.current_window).type == "v_split" ||
-          this.tree.getLeafById(this.current_window).type == "h_split") && 
-          this.tree.getParentById(this.current_window).children.length <= 1 ) {
-      return this.changeAction(type);
-    }
-
-    this.tree.appendLeaf(this.current_window, { type: type });
+    if ((this.tree.getParentById(this.current_window).type == "v_split" ||
+          this.tree.getParentById(this.current_window).type == "h_split") && 
+          this.tree.getParentById(this.current_window).children.length <= 1 )
+            this.changeAction(type);
+    else this.tree.appendLeaf(this.current_window, { type: type });
 
   }
 
