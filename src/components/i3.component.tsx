@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { i3Tree } from '../services/i3tree.service';
 
+import { Terminal } from './i3';
+
 export class I3 extends React.Component {
 
   state;
@@ -35,7 +37,7 @@ export class I3 extends React.Component {
       if (tree.children && tree.children.length > 0) {
         return this.renderSection(tree);
       } else { 
-        return <div key={tree.id}>{tree.type}</div>
+        return <Terminal key={tree.id} id={tree.id} type={tree.type} />
         }
       }) } </div>
     }
