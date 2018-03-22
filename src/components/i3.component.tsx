@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { i3Tree } from '../services/i3tree.service';
 
+import { renderGeneric } from './i3';
+
 import { Terminal } from './i3';
 
 export class I3 extends React.Component {
@@ -20,27 +22,6 @@ export class I3 extends React.Component {
     this.state.i3.newTerminal();
     this.state.i3.newTerminal();
     this.state.i3.tabbed();
-  }
-
-  renderTree() {
-    return (<div>
-      { this.renderSection(this.state.i3.getTree().getLeafById("root")) }
-    </div>)
-  }
-
-  renderSection(leaf: any) {
-    if (leaf.children && leaf.children.length > 0) {
-      return <div key={leaf.id}> {leaf.type} { leaf.children.map(x => {
-
-      let tree = this.state.i3.getTree().getLeafById(x);
-
-      if (tree.children && tree.children.length > 0) {
-        return this.renderSection(tree);
-      } else { 
-        return <Terminal key={tree.id} id={tree.id} type={tree.type} />
-        }
-      }) } </div>
-    }
   }
 
   addTerminal = (e) => {
@@ -74,13 +55,9 @@ export class I3 extends React.Component {
   }
 
   render() {
-    return (<div>{this.renderTree()}
-        <button onClick={ this.addTerminal }>new terminal</button>
-        <button onClick={ this.vsplit }>vsplit</button>
-        <button onClick={ this.hsplit }>hsplit</button>
-        <button onClick={ this.tab }>tab</button>
-        <button onClick={ this.stack }>stack</button>
-        <button onClick={ this.deleteWindow }>deleteWindow</button>
-      </div>)
+    this.createDate();
+    let tree = this.state.i3.createTree();
+    console.log(tree);
+    return renderGeneric(tree.type, "100%", "100%", tree.id, tree.children);
   }
 }
