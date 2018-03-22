@@ -39,7 +39,7 @@ export class i3Tree {
   }
 
   newTerminal(): void {
-    this.current_window = this.tree.addLeaf({ type: "terminal" }, this.tree.getParent(this.current_window));
+    this.current_window = this.tree.addLeaf({ type: "terminal" }, this.tree.getParentIdById(this.current_window));
   }
 
   stacked() {
@@ -63,13 +63,18 @@ export class i3Tree {
   }
 
   goUp() {
-    this.current_window = this.tree.getParent(this.current_window);
+    this.current_window = this.tree.getParentIdById(this.current_window);
   }
 
   closeWindow() {
     if (this.current_window === "root") return;
-    this.tree.removeLeafById(this.current_window);
-    // TODO, SET CURRENT WINDOW TO NEXT CHJILD
+
+    this.current_window = this.tree.removeLeafById(this.current_window);
+    
+    while(action_types.indexOf(this.tree.getLeafById(this.current_window).type) > -1 ) {
+      this.current_window = this.tree.removeLeafById(this.current_window);
+    }
+
   }
 
   private splitAction(type: string) {
@@ -77,7 +82,10 @@ export class i3Tree {
   }
 
   private changeAction(type: string) {
-    this.tree.changeLeaf(this.current_window, { type: type });
+
+    if (this.tree.getParentIdById(this.current_window) == "")
+
+    this.tree.changeParent(this.current_window, { type: type });
   }
 
 }
@@ -102,26 +110,38 @@ export class Tree {
 
   }
 
-  changeLeaf(child: string, leaf: Leaf) {
-    this.getLeafById(this.getParent(child)).type = leaf.type;
+  changeParent(child: string, leaf: Leaf) {
+    this.getParentById(child).type = leaf.type;
   }
 
   appendLeaf(child: string, leaf: Leaf) {
 
-    if (!(action_types.indexOf(leaf.type) > -1) && this.getLeafById(this.getParent(child)).children.length <= 1) return;
+    if (!(action_types.indexOf(leaf.type) > -1) && this.getParentById(child).children.length <= 1) return;
 
-    if (action_types.indexOf(leaf.type) > -1 && action_types.indexOf(this.getLeafById(this.getParent(child)).type) > -1) { this.changeLeaf(child, leaf); }
+    if (action_types.indexOf(leaf.type) > -1 && action_types.indexOf(this.getParentById(child).type) > -1) { this.changeParent(child, leaf); }
     else {
-      let id = this.addLeaf({ ...leaf, children: [child], parent: this.getParent(child) });
-      removeElement(this.getLeafById(this.getParent(child)).children, child);
+      let id = this.addLeaf({ ...leaf, children: [child], parent: this.getParentIdById(child) });
+      removeElement(this.getParentById(child).children, child);
       this.getLeafById(child).parent = id;
     }
   }
 
   removeLeafById(id: string) {
+    let siblings = this.leaves[this.getParentIdById(id)].children.slice();
+    let parent = this.getParentIdById(id);
+    let index = removeElement(this.leaves[this.getParentIdById(id)].children, id);
+    
     this.removeLeafChildrenById(id);
-    removeElement(this.leaves[this.leaves[id].parent].children, id);
     delete this.leaves[id];
+
+    if (siblings[index]) return siblings[index];
+
+    let originalIndex = siblings.indexOf(id);
+    if (siblings[originalIndex] && parent) 
+      return parent;
+
+    return "root";
+
   }
 
   removeLeafChildrenRecursively(children: string[]) {
@@ -149,8 +169,12 @@ export class Tree {
     return this.leaves;
   }
 
-  getParent(child: string) {
+  getParentIdById(child: string): string {
     return this.leaves[child].parent;
+  }
+
+  getParentById(child: string): Leaf {
+    return this.getLeafById(this.getParentIdById(child));
   }
 
 }
@@ -166,20 +190,14 @@ interface ILeafMap {
   [id: string]: Leaf
 }
 
-function removeElement(array: string[], element: string) {
+export function removeElement(array: string[], element: string): number {
   let index = array.indexOf(element)
-
   if (index > -1 ) { 
-    let newArray = array.splice(index, 1).slice();
-    if ( newArray.length > 1) { 
-
-      if ((newArray.length - 1) >= index) {
+    array.splice(index, 1).slice();
+    if ( array.length > 0) { 
+      if ((array.length - 1) >= index) {
         return index;
-      } else {
-        return index - 1;
-      }
-    }
-  } else {
-    return -1;
-  }
-}
+      } else return (index - 1);
+    } else return -1;
+  } else return -1;
+ }
