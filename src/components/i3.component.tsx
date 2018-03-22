@@ -19,9 +19,9 @@ export class I3 extends React.Component {
     this.state.i3.newTerminal();
     this.state.i3.verticalSplit();
     this.state.i3.goUp();
+    this.state.i3.horizontalSplit();
     this.state.i3.newTerminal();
     this.state.i3.newTerminal();
-    this.state.i3.tabbed();
   }
 
   addTerminal = (e) => {

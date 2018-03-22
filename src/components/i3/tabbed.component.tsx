@@ -7,7 +7,7 @@ export class Tabbed extends React.Component<any, any> {
     let width = '100%';
     let height = '100%';
 
-    return <div key={this.props.id}> tabbed
+    return <div style={{ width: this.props.width, height: this.props.height}} key={this.props.id}>
       { 
         this.props.tree.map(x => {
           return renderGeneric(x.type, width, height, x.id, x.children);
