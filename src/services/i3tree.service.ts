@@ -78,13 +78,18 @@ export class i3Tree {
   }
 
   private splitAction(type: string) {
+
+    if ((this.tree.getLeafById(this.current_window).type == "v_split" ||
+          this.tree.getLeafById(this.current_window).type == "h_split") && 
+          this.tree.getParentById(this.current_window).children.length <= 1 ) {
+      return this.changeAction(type);
+    }
+
     this.tree.appendLeaf(this.current_window, { type: type });
+
   }
 
   private changeAction(type: string) {
-
-    if (this.tree.getParentIdById(this.current_window) == "")
-
     this.tree.changeParent(this.current_window, { type: type });
   }
 
@@ -115,15 +120,9 @@ export class Tree {
   }
 
   appendLeaf(child: string, leaf: Leaf) {
-
-    if (!(action_types.indexOf(leaf.type) > -1) && this.getParentById(child).children.length <= 1) return;
-
-    if (action_types.indexOf(leaf.type) > -1 && action_types.indexOf(this.getParentById(child).type) > -1) { this.changeParent(child, leaf); }
-    else {
-      let id = this.addLeaf({ ...leaf, children: [child], parent: this.getParentIdById(child) });
-      removeElement(this.getParentById(child).children, child);
-      this.getLeafById(child).parent = id;
-    }
+    let id = this.addLeaf({ ...leaf, children: [ child ], parent: this.getParentIdById(child) });
+    removeElement(this.getParentById(child).children, child);
+    this.getLeafById(child).parent = id;
   }
 
   removeLeafById(id: string) {
