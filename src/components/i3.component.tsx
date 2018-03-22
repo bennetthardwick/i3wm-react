@@ -12,52 +12,76 @@ export class I3 extends React.Component {
   constructor(props) {
     super(props);
     this.state = { i3: new i3Tree() }
+
+    this.createDate();
+  }
+
+  setWindow = (id) => {
+    console.log(id);
+    this.state.i3.setWindow(id);
   }
 
   createDate = () => {
     this.state.i3.newTerminal();
     this.state.i3.newTerminal();
     this.state.i3.verticalSplit();
-    this.state.i3.goUp();
     this.state.i3.horizontalSplit();
     this.state.i3.newTerminal();
     this.state.i3.newTerminal();
   }
 
-  addTerminal = (e) => {
+  addTerminal = () => {
     this.state.i3.newTerminal();
     this.setState(this.state);
   }
 
-  vsplit = (e) => {
+  vsplit = (e?) => {
     this.state.i3.verticalSplit();
     this.setState(this.state);
   }
 
-  hsplit = (e) => {
+  hsplit = (e?) => {
     this.state.i3.horizontalSplit();
     this.setState(this.state);
   }
 
-  tab = (e) => {
+  tab = (e?) => {
     this.state.i3.tabbed();
     this.setState(this.state);
   }
 
-  stack = (e) => {
+  stack = (e?) => {
     this.state.i3.stacked();
     this.setState(this.state);
   }
 
-  deleteWindow = (e) => {
+  deleteWindow = (e?) => {
     this.state.i3.closeWindow();
     this.setState(this.state);
   }
 
+  handleKeyUp = (e) => {
+
+    console.log(e.key);
+
+    if (e.key === "Q")
+      this.deleteWindow();
+
+    if (e.key === "Enter")
+      this.addTerminal();
+
+    if (e.key === "v")
+      this.vsplit();
+
+    if (e.key === "h")
+      this.hsplit();
+
+  }
+
   render() {
-    this.createDate();
+    //this.createDate();
     let tree = this.state.i3.createTree();
     console.log(tree);
-    return renderGeneric(tree.type, "100%", "100%", tree.id, tree.children);
+    return <div tabIndex={0} onKeyUp={this.handleKeyUp}> {renderGeneric(tree.type, "100%", "100%", tree.id, tree.children, this.setWindow)} </div>;
   }
 }

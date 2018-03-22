@@ -63,8 +63,11 @@ export class i3Tree {
 
   }
 
-  goUp() {
-    this.current_window = this.tree.getParentIdById(this.current_window);
+  setWindow(id) {
+
+    console.log(id);
+
+    this.current_window = id;
   }
 
   closeWindow() {
@@ -93,3 +96,4 @@ export class i3Tree {
 
 }
 
+  

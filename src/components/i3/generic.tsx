@@ -1,10 +1,15 @@
 import * as React from 'react';
 import { Terminal, HSplit, VSplit, Stacked, Tabbed } from '.';
 
-export function renderGeneric(type: string, width: string, height: string, id: string, children?: any) {
+let setWindow;
+
+export function renderGeneric(type: string, width: string, height: string, id: string, children?: any, window?: any) {
+
+  setWindow = (window) ? window : setWindow;
+
   switch (type) {
     case "terminal":
-      return <Terminal key={id} width={width} height={height} type={type} />
+      return <Terminal id={id} key={id} width={width} height={height} type={type} setWindow={setWindow} />
 
     case "h_split":
       return <HSplit key={id} width={width} height={height} tree={children} />
