@@ -1,5 +1,5 @@
 # i3-config-generator
-A web app for generating configuration for i3. It includes an implementation of the i3wm tree.
+React implementation of i3wm.
 
 ## Getting Started
 Instructions for installing dependencies, developing and testing.
