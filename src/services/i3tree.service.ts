@@ -16,6 +16,10 @@ export class i3Tree {
     return this.tree;
   }
 
+  getCurrentWindow(): string {
+    return this.current_window;
+  }
+
   createTree() {
 
     let tree = { id: "root", type: "root", children: [] };
@@ -40,7 +44,7 @@ export class i3Tree {
   }
 
   newTerminal(): void {
-    this.current_window = this.tree.addLeaf({ type: "terminal" }, this.tree.getParentIdById(this.current_window));
+    this.current_window = this.tree.addLeaf({ type: "terminal" }, this.tree.getParentIdById(this.current_window), this.current_window);
   }
 
   stacked() {

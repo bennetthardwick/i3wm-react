@@ -7,12 +7,7 @@ let terminalStyle = {
 }
 
 export class Terminal extends React.Component<any, any> {
-
-  setCurrentWindowCurrent = (props) => {
-    console.log(props);
-  }
-
   render() {
-    return <div onMouseEnter={() => this.props.setWindow(this.props.id)} style={{ width: this.props.width, height: this.props.height, ...terminalStyle }} >This is a {this.props.id} or something</div>
+    return <div onMouseEnter={() => this.props.setWindow(this.props.id)} style={{ width: this.props.width, height: this.props.height, ...terminalStyle }} >{this.props.id}</div>
   }
 }

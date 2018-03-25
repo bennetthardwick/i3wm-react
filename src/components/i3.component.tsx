@@ -17,7 +17,6 @@ export class I3 extends React.Component {
   }
 
   setWindow = (id) => {
-    console.log(id);
     this.state.i3.setWindow(id);
   }
 
@@ -62,7 +61,6 @@ export class I3 extends React.Component {
 
   handleKeyUp = (e) => {
 
-    console.log(e.key);
 
     if (e.key === "Q")
       this.deleteWindow();
@@ -81,7 +79,10 @@ export class I3 extends React.Component {
   render() {
     //this.createDate();
     let tree = this.state.i3.createTree();
-    console.log(tree);
-    return <div tabIndex={0} onKeyUp={this.handleKeyUp}> {renderGeneric(tree.type, "100%", "100%", tree.id, tree.children, this.setWindow)} </div>;
+    return <div tabIndex={0} onKeyUp={this.handleKeyUp}> {renderGeneric(tree.type, "100%", "100%", tree.id, tree.children, this.setWindow)} 
+
+      <pre><code>Selected: { this.state.i3.getCurrentWindow() }<br/>{JSON.stringify(tree, null, 2)}</code></pre>  
+
+    </div>;
   }
 }

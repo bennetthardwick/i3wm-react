@@ -8,12 +8,26 @@ export class Tree {
     this.leaves["root"] = { id: "root", type: "root", children: [], parent: "root" };
   }
 
-  addLeaf(leaf: Leaf, parent?:string): string {
+  addLeaf(leaf: Leaf, parent?:string, sibling?: string, before?: boolean): string {
     if (!leaf.id) leaf.id = generate();
     if (!leaf.children) leaf.children = [];
     if (!leaf.parent && parent) leaf.parent = parent;
+    if (!before) before = false;
 
     this.leaves[leaf.id] = leaf;
+
+    if (sibling) {
+
+      let index = this.leaves[leaf.parent].children.indexOf(sibling);
+
+      if (!before) index++;
+
+      if (index >= 0) {
+        this.leaves[leaf.parent].children.splice(index, 0, leaf.id);
+        return leaf.id;
+      }
+    }
+    
     this.leaves[leaf.parent].children.push(leaf.id);
 
     return leaf.id;
@@ -25,7 +39,7 @@ export class Tree {
   }
 
   appendLeaf(child: string, leaf: Leaf) {
-    let id = this.addLeaf({ ...leaf, children: [ child ], parent: this.getParentIdById(child) });
+    let id = this.addLeaf({ ...leaf, children: [ child ]}, this.getParentIdById(child), child, true);
     removeElement(this.getParentById(child).children, child);
     this.getLeafById(child).parent = id;
   }
