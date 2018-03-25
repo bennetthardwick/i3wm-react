@@ -1,5 +1,6 @@
 # i3-config-generator
-React implementation of i3wm.
+[![Build Status](https://travis-ci.org/bennetthardwick/i3wm-react.svg?branch=master)](https://travis-ci.org/bennetthardwick/i3wm-react)  
+An implementation of i3wm using React.
 
 ## Getting Started
 Instructions for installing dependencies, developing and testing.
