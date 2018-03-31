@@ -1,5 +1,6 @@
 const I3Tree = require('../dist/services/i3tree.service').i3Tree;
 const Tree = require('../dist/services/tree').Tree;
+const _ = require('lodash');
 
 const expect = require('chai').expect;
 
@@ -34,8 +35,39 @@ describe('i3tree', () => {
 
   it('returns the current focused terminal', () => {
     i3Tree.newTerminal();
-    expect(i3Tree.getCurrentWindow() == "root").to.equal(false);
+    expect(i3Tree.getCurrentWindow()).to.not.equal("root");
   }); 
+
+  it('deletes all windows in order', () => {
+    try {
+      i3Tree.newTerminal();
+      i3Tree.newTerminal();
+      i3Tree.newTerminal();
+      i3Tree.newTerminal();
+
+      i3Tree.closeWindow();
+      i3Tree.closeWindow();
+      i3Tree.closeWindow();
+      i3Tree.closeWindow();
+    } catch (e) {
+      expect(e).to.equal(null);
+    }
+  });
+
+  it('deletes all windows out of order', () => {
+    try {
+      let windows = [];
+
+      for (let i = 0; i < 10; i++) {
+        windows.push(i3Tree.newTerminal());
+      }
+
+      _.shuffle(windows).forEach(x => { i3Tree.setWindow(x); i3Tree.closeWindow() });
+
+    } catch (e) {
+      expect(e).to.equal(null);
+    }
+  });
 
 
 });

@@ -68,9 +68,6 @@ export class i3Tree {
   }
 
   setWindow(id) {
-
-    console.log(id);
-
     this.current_window = id;
   }
 
