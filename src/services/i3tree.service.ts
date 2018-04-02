@@ -30,7 +30,7 @@ export class i3Tree {
         leaf.children.map((x,y) => {
           let i = this.tree.getLeafById(x);
 
-          _tree.children[y] = { id: i.id, type: i.type, children: [] };
+          _tree.children[y] = { id: i.id, type: i.type, parent: i.parent, children: [] };
           recurse(_tree.children[y]);
 
         });
@@ -74,10 +74,18 @@ export class i3Tree {
   closeWindow() {
     if (this.current_window === "root") return;
 
-    this.current_window = this.tree.removeLeafById(this.current_window);
+    this.current_window = this.tree.removeLeafById(this.current_window);    
     
     while(action_types.indexOf(this.tree.getLeafById(this.current_window).type) > -1 ) {
-      this.current_window = this.tree.removeLeafById(this.current_window);
+
+      let leaf = this.tree.getLeafById(this.current_window);
+
+      if (leaf.children.length > 0) {
+        this.current_window = leaf.children[leaf.children.length - 1];
+      } else {
+        this.current_window = this.tree.removeLeafById(this.current_window);
+      }
+
     }
 
   }

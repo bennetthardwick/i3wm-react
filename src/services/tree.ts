@@ -45,20 +45,18 @@ export class Tree {
   }
 
   removeLeafById(id: string) {
-    let siblings = this.leaves[this.getParentIdById(id)].children.slice();
+    let siblings = this.leaves[this.getParentIdById(id)].children;
     let parent = this.getParentIdById(id);
     let index = removeElement(this.leaves[this.getParentIdById(id)].children, id);
-    
+
     this.removeLeafChildrenById(id);
     delete this.leaves[id];
 
     if (siblings[index]) return siblings[index];
+    if (siblings.length > 0) return siblings[siblings.length - 1];
+    if (parent) return parent;
 
-    let originalIndex = siblings.indexOf(id);
-    if (siblings[originalIndex] && parent) 
-      return parent;
-
-    return "root";
+    //return "root";
 
   }
 
@@ -111,7 +109,7 @@ interface ILeafMap {
 export function removeElement(array: string[], element: string): number {
   let index = array.indexOf(element)
   if (index > -1 ) { 
-    array.splice(index, 1).slice();
+    array.splice(index, 1);
     if ( array.length > 0) { 
       if ((array.length - 1) >= index) {
         return index;
