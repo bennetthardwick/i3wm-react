@@ -13,14 +13,14 @@ export class I3 extends React.Component {
     super(props);
     this.state = { i3: new i3Tree() }
 
-    this.createDate();
+    this.doFakeWork();
   }
 
   setWindow = (id) => {
     this.state.i3.setWindow(id);
   }
 
-  createDate = () => {
+  doFakeWork = () => {
     this.state.i3.newTerminal();
     this.state.i3.newTerminal();
     this.state.i3.verticalSplit();
@@ -77,12 +77,7 @@ export class I3 extends React.Component {
   }
 
   render() {
-    //this.createDate();
     let tree = this.state.i3.createTree();
-    return <div tabIndex={0} onKeyUp={this.handleKeyUp}> {renderGeneric(tree.type, "100%", "100%", tree.id, tree.children, this.setWindow)} 
-
-      <pre><code>Selected: { this.state.i3.getCurrentWindow() }<br/>{JSON.stringify(tree, null, 2)}</code></pre>  
-
-    </div>;
+    return <div tabIndex={0} onKeyUp={this.handleKeyUp}> {renderGeneric(tree.type, "100%", "100%", tree.id, tree.children, this.setWindow)}</div>;
   }
 }
