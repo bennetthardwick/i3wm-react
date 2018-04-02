@@ -59,9 +59,9 @@ describe('i3tree', () => {
       let windows = [];
 
       for (let i = 0; i < 10; i++) {
-        windows.push(i3Tree.newTerminal());
+        i3Tree.newTerminal()
+        windows.push(i3Tree.getCurrentWindow());
       }
-
       _.shuffle(windows).forEach(x => { i3Tree.setWindow(x); i3Tree.closeWindow() });
 
     } catch (e) {
