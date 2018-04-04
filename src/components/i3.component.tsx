@@ -78,6 +78,6 @@ export class I3 extends React.Component {
 
   render() {
     let tree = this.state.i3.createTree();
-    return <div tabIndex={0} onKeyUp={this.handleKeyUp}> {renderGeneric(tree.type, "100%", "100%", tree.id, tree.children, this.setWindow)}</div>;
+    return <div style={{ height: "100%", width: "100%" }} tabIndex={0} onKeyUp={this.handleKeyUp}> {renderGeneric(tree.type, "100%", "100%", tree.id, tree.children, this.setWindow)}</div>;
   }
 }
